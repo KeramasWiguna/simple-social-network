@@ -1,4 +1,4 @@
-import { createSelector } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { apiSlice } from "../api/apiSlice";
 
 export const postApiSlice = apiSlice.injectEndpoints({
@@ -39,3 +39,18 @@ export const {
   usePatchPostMutation,
   useRemovePostMutation,
 } = postApiSlice;
+
+export const postSlice = createSlice({
+  name: "post",
+  initialState: { deletedPost: [] },
+  reducers: {
+    //this used to simulate removed post on the UI since API not really deleting post
+    saveDeletedPost: (state, { payload }) => {
+      state.deletedPost = [...state.deletedPost, payload];
+    },
+  },
+});
+
+export const { saveDeletedPost } = postSlice.actions;
+
+export default postSlice.reducer;

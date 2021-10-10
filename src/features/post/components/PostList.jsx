@@ -1,12 +1,20 @@
+import { useDispatch, useSelector } from "react-redux";
 import { UserAvatar } from "../../user/components/UserAvatar";
-import { useFetchPostsQuery, useRemovePostMutation } from "../postSlice";
+import {
+  saveDeletedPost,
+  useFetchPostsQuery,
+  useRemovePostMutation,
+} from "../postSlice";
 
 export function PostList() {
   const { data: posts, error, isLoading } = useFetchPostsQuery();
-  const [removePost] = useRemovePostMutation();
+  const [removePost, { isError }] = useRemovePostMutation();
+  const deletedPost = useSelector((state) => state.post.deletedPost);
+  const dispatch = useDispatch();
 
   const handleRemove = async (id) => {
     await removePost(id);
+    if (!isError) dispatch(saveDeletedPost(id));
   };
 
   return (
@@ -17,15 +25,19 @@ export function PostList() {
         <>Loading</>
       ) : posts ? (
         <ul>
-          {posts.map((post) => (
-            <li key={post.id}>
-              <div>
-                <UserAvatar userId={post.userId} />
-                {post.title}
-                <button onClick={() => handleRemove(post.id)}>x</button>
-              </div>
-            </li>
-          ))}
+          {posts.map((post) => {
+            if (!deletedPost.includes(post.id)) {
+              return (
+                <li key={post.id}>
+                  <div>
+                    <UserAvatar userId={post.userId} />
+                    {post.title}
+                    <button onClick={() => handleRemove(post.id)}>x</button>
+                  </div>
+                </li>
+              );
+            }
+          })}
         </ul>
       ) : null}
     </div>
