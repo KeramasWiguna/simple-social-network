@@ -1,19 +1,19 @@
 import { BASE_URL } from "../../app/const";
 import { user } from "../../app/testData";
 import { setupApiStore } from "../../app/testUtils";
-import { userService } from "./userService";
+import { userApiSlice } from "./userSlice";
 
 beforeEach(() => {
   fetchMock.resetMocks();
 });
 
 describe("fetchUsers", () => {
-  const storeRef = setupApiStore(userService);
+  const storeRef = setupApiStore(userApiSlice);
   fetchMock.mockResponse(JSON.stringify({}));
 
   test("request is correct", () => {
     return storeRef.store
-      .dispatch(userService.endpoints.fetchUsers.initiate(undefined))
+      .dispatch(userApiSlice.endpoints.fetchUsers.initiate(undefined))
       .then(() => {
         expect(fetchMock).toBeCalledTimes(1);
         const { method, url } = fetchMock.mock.calls[0][0];
@@ -24,11 +24,11 @@ describe("fetchUsers", () => {
   });
 
   test("successful response", () => {
-    const storeRef = setupApiStore(userService);
+    const storeRef = setupApiStore(userApiSlice);
     fetchMock.mockResponse(JSON.stringify([user]));
 
     return storeRef.store
-      .dispatch(userService.endpoints.fetchUsers.initiate(undefined))
+      .dispatch(userApiSlice.endpoints.fetchUsers.initiate(undefined))
       .then((action) => {
         const { status, data, isSuccess } = action;
         expect(status).toBe("fulfilled");
@@ -38,11 +38,11 @@ describe("fetchUsers", () => {
   });
 
   test("unsuccessful response", () => {
-    const storeRef = setupApiStore(userService);
+    const storeRef = setupApiStore(userApiSlice);
     fetchMock.mockReject(new Error("Internal Server Error"));
 
     return storeRef.store
-      .dispatch(userService.endpoints.fetchUsers.initiate(undefined))
+      .dispatch(userApiSlice.endpoints.fetchUsers.initiate(undefined))
       .then((action) => {
         const {
           status,

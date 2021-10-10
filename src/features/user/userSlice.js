@@ -1,7 +1,18 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { userService } from "./userService";
+import { apiSlice } from "../api/apiSlice";
 
-export const selectUsersResult = userService.endpoints.fetchUsers.select();
+export const userApiSlice = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    fetchUsers: builder.query({
+      query: () => "users",
+      providesTags: ["User"],
+    }),
+  }),
+});
+
+export const { useFetchUsersQuery } = userApiSlice;
+
+export const selectUsersResult = userApiSlice.endpoints.fetchUsers.select();
 const emptyUsers = [];
 
 export const selectAllUsers = createSelector(

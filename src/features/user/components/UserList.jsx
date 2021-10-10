@@ -1,4 +1,4 @@
-import { useFetchUsersQuery } from "../userService";
+import { useFetchUsersQuery } from "../userSlice";
 
 export function UserList() {
   const { data: users, error, isLoading } = useFetchUsersQuery();
