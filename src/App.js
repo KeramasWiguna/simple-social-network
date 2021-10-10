@@ -4,6 +4,7 @@ import { Counter } from "./features/counter/Counter";
 import { UserList } from "./features/user/components/UserList";
 import "./App.css";
 import { UserAvatar } from "./features/user/components/UserAvatar";
+import { PostList } from "./features/post/components/PostList";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <UserAvatar userId={1} />
         <UserList />
+        <PostList />
         <Counter />
         <p>
           Edit <code>src/App.js</code> and save to reload.
