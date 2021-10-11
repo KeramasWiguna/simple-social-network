@@ -65,7 +65,7 @@ export const CommentForm = ({ comment, userId, onSuccess, ...props }) => {
   return (
     <Box
       py="4"
-      borderBottom={!!comment ? 0 : "1px"}
+      borderTop={!!comment ? 0 : "1px"}
       borderColor="gray.200"
       w="100%"
       {...props}

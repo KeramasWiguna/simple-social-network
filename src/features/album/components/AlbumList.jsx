@@ -1,4 +1,4 @@
-import { Box, Heading } from "@chakra-ui/layout";
+import { Heading } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
 import { Link } from "@reach/router";
 import { useFetchAlbumsQuery } from "../albumSlice";
