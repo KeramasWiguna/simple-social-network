@@ -32,9 +32,6 @@ export const postApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-// export const selectPostResult = postApiSlice.endpoints.fetchPosts.select();
-// const emptyPosts = [];
-
 export const selectCommentResult =
   postApiSlice.endpoints.fetchPostComments.select();
 const emptyComments = [];
@@ -80,12 +77,26 @@ export const postSlice = createSlice({
         state.posts = [...state.posts, payload];
       }
     );
+    //this used to simulate edited post on the UI since API not really edit post
+    builder.addMatcher(
+      postApiSlice.endpoints.patchPost.matchFulfilled,
+      (state, { payload }) => {
+        let edited = [...state.posts];
+        let index = edited.findIndex(
+          (post) => post.id === parseInt(payload.id)
+        );
+        edited.splice(index, 1, payload);
+        state.posts = edited;
+      }
+    );
   },
 });
 
 export const selectAllPosts = (state) => state.post.posts;
+export const selectPostById = (state, postId) =>
+  state.post.posts.find((post) => post.id === parseInt(postId));
 export const selectPostByUserId = (state, userId) =>
-  state.post.posts.filter((post) => post.userId === userId);
+  state.post.posts.filter((post) => post.userId === parseInt(userId));
 
 export const { saveDeletedPost } = postSlice.actions;
 
