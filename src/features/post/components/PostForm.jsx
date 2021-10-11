@@ -24,6 +24,7 @@ export const PostForm = ({ post, onSuccess, ...props }) => {
     if (post) {
       await patchPost({
         id: post.id,
+        userId: 1,
         title,
         body,
       });
@@ -47,6 +48,7 @@ export const PostForm = ({ post, onSuccess, ...props }) => {
       py="4"
       borderBottom={!!post ? 0 : "1px"}
       borderColor="gray.200"
+      w="100%"
       {...props}
     >
       <form onSubmit={handleSubmit(onSubmit)}>

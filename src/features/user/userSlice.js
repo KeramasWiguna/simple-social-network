@@ -23,5 +23,5 @@ export const selectAllUsers = createSelector(
 export const selectUserById = createSelector(
   selectAllUsers,
   (state, userId) => userId,
-  (users, userId) => users.find((user) => user.id === userId)
+  (users, userId) => users.find((user) => user.id === parseInt(userId))
 );
