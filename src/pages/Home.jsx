@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem } from "@chakra-ui/layout";
+import { Box, Grid, GridItem, Heading } from "@chakra-ui/layout";
 import { PostForm } from "../features/post/components/PostForm";
 import { PostList } from "../features/post/components/PostList";
 import { UserList } from "../features/user/components/UserList";
@@ -16,7 +16,10 @@ export const Home = () => {
           <PostForm />
           <PostList />
         </GridItem>
-        <GridItem borderLeft={[0, 1]} borderColor="gray.200" colSpan={[1, 2]}>
+        <GridItem colSpan={[1, 2]}>
+          <Heading ml={[0, 4]} size="lg" mb={4}>
+            Friend List
+          </Heading>
           <Box pl={[0, 4]}>
             <UserList />
           </Box>

@@ -31,21 +31,6 @@ export const commentApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-// export const selectCommentResult =
-//   commentApiSlice.endpoints.fetchComments.select();
-// const emptyComments = [];
-
-// export const selectAllComments = createSelector(
-//   selectCommentResult,
-//   (postResult) => postResult?.data ?? emptyComments
-// );
-
-// export const selectCommentById = createSelector(
-//   selectAllComments,
-//   (state, commentId) => commentId,
-//   (comments, commentId) => comments.find((comment) => comment.id === commentId)
-// );
-
 export const {
   useCreateCommentMutation,
   usePatchCommentMutation,

@@ -104,7 +104,7 @@ export const PostCard = ({ post, editable, ...props }) => {
         <Modal isOpen={isEdit} onClose={onEditClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Edit Post</ModalHeader>
+            <ModalHeader fontSize="lg">Edit Post</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <PostForm post={post} onSuccess={onEditClose} />

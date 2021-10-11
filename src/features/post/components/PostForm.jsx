@@ -43,7 +43,12 @@ export const PostForm = ({ post, onSuccess, ...props }) => {
   };
 
   return (
-    <Box py="4" borderBottom={post ? 0 : 1} borderColor="gray.200" {...props}>
+    <Box
+      py="4"
+      borderBottom={!!post ? 0 : "1px"}
+      borderColor="gray.200"
+      {...props}
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.title}>
           <Input

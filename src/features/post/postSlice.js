@@ -52,6 +52,7 @@ export const {
   useCreatePostMutation,
   usePatchPostMutation,
   useRemovePostMutation,
+  useFetchPostCommentsQuery,
 } = postApiSlice;
 
 export const postSlice = createSlice({
