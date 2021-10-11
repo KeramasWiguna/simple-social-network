@@ -1,13 +1,15 @@
 import React from "react";
 import { Router } from "@reach/router";
 import { Home } from "./pages/Home";
-import { Porfile } from "./pages/Profile";
+import { Profile } from "./pages/Profile";
+import { DetailPost } from "./pages/DetailPost";
 
 function App() {
   return (
     <Router>
       <Home default path="/" />
-      <Porfile path="profile/:userId" />
+      <Profile path="profile/:userId" />
+      <DetailPost path="post/:postId" />
     </Router>
   );
 }
