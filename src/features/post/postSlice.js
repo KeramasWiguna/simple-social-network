@@ -33,6 +33,20 @@ export const postApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
+export const selectPostResult = postApiSlice.endpoints.fetchPosts.select();
+const emptyPosts = [];
+
+export const selectAllPosts = createSelector(
+  selectPostResult,
+  (postResult) => postResult?.data ?? emptyPosts
+);
+
+export const selectPostByUserId = createSelector(
+  selectAllPosts,
+  (state, userId) => userId,
+  (posts, userId) => posts.filter((post) => post.userId === userId)
+);
+
 export const {
   useFetchPostsQuery,
   useCreatePostMutation,
