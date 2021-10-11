@@ -37,6 +37,7 @@ export function PostList() {
                 </li>
               );
             }
+            return null;
           })}
         </ul>
       ) : null}

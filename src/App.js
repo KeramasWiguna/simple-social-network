@@ -1,5 +1,4 @@
 import React from "react";
-import { render } from "react-dom";
 import { Router } from "@reach/router";
 import { Home } from "./pages/Home";
 import { Porfile } from "./pages/Profile";
