@@ -1,4 +1,4 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { createSelector } from "@reduxjs/toolkit";
 import { apiSlice } from "../api/apiSlice";
 
 export const albumApiSlice = apiSlice.injectEndpoints({

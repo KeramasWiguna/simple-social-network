@@ -11,7 +11,6 @@ import {
   ModalOverlay,
 } from "@chakra-ui/modal";
 import { Spinner } from "@chakra-ui/spinner";
-import { useNavigate } from "@reach/router";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -23,7 +22,6 @@ import { MainLayout } from "./layouts/MainLayout";
 export const Album = ({ albumId }) => {
   const album = useSelector((state) => selectAlbumById(state, albumId));
   const { data: photos, isLoading } = useFetchAlbumPhotosQuery(albumId);
-  const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(0);
   const onClose = () => setIsOpen(false);
