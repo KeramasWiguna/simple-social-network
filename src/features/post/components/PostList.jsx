@@ -1,13 +1,17 @@
+import { Heading } from "@chakra-ui/layout";
+import { Spinner } from "@chakra-ui/spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { UserAvatar } from "../../user/components/UserAvatar";
 import {
   saveDeletedPost,
+  selectAllPosts,
   useFetchPostsQuery,
   useRemovePostMutation,
 } from "../postSlice";
+import { PostCard } from "./PostCard";
 
 export function PostList() {
-  const { data: posts, error, isLoading } = useFetchPostsQuery();
+  const posts = useSelector(selectAllPosts);
+  const { error, isLoading } = useFetchPostsQuery();
   const [removePost, { isError }] = useRemovePostMutation();
   const deletedPost = useSelector((state) => state.post.deletedPost);
   const dispatch = useDispatch();
@@ -20,26 +24,20 @@ export function PostList() {
   return (
     <div>
       {error ? (
-        <>Oh no, there was an error</>
+        <Heading color="gray.400">Oh no, there was an error</Heading>
       ) : isLoading ? (
-        <>Loading</>
+        <Spinner size="md" />
       ) : posts ? (
-        <ul>
-          {posts.map((post) => {
-            if (!deletedPost.includes(post.id)) {
-              return (
-                <li key={post.id}>
-                  <div>
-                    <UserAvatar userId={post.userId} />
-                    {post.title}
-                    <button onClick={() => handleRemove(post.id)}>x</button>
-                  </div>
-                </li>
-              );
-            }
-            return null;
-          })}
-        </ul>
+        <>
+          {posts
+            .map((post) => {
+              if (!deletedPost.includes(post.id)) {
+                return <PostCard key={post.id} post={post} />;
+              }
+              return null;
+            })
+            .reverse()}
+        </>
       ) : null}
     </div>
   );

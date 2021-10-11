@@ -1,28 +1,33 @@
-import { useNavigate } from "@reach/router";
+import { Spinner } from "@chakra-ui/spinner";
 import { useFetchUsersQuery } from "../userSlice";
+import { UserAvatar } from "./UserAvatar";
 
 export function UserList() {
   const { data: users, error, isLoading } = useFetchUsersQuery();
-  const navigate = useNavigate();
-
-  const handleClick = (userId) => {
-    navigate(`profile/${userId}`);
-  };
 
   return (
     <div>
       {error ? (
         <>Oh no, there was an error</>
       ) : isLoading ? (
-        <>Loading</>
+        <Spinner size="md" />
       ) : users ? (
-        <ul>
-          {users.map((user) => (
-            <li onClick={() => handleClick(user.id)} key={user.id}>
-              {user.name}
-            </li>
-          ))}
-        </ul>
+        <>
+          {users.map((user) => {
+            if (user.id !== 1) {
+              return (
+                <UserAvatar
+                  key={user.id}
+                  mb="10px"
+                  userId={parseInt(user.id)}
+                  withLabel
+                />
+              );
+            } else {
+              return null;
+            }
+          })}
+        </>
       ) : null}
     </div>
   );
