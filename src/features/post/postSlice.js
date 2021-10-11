@@ -5,7 +5,6 @@ export const postApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     fetchPosts: builder.query({
       query: () => "posts",
-      providesTags: ["Post"],
     }),
     createPost: builder.mutation({
       query: (newPost) => ({
@@ -13,7 +12,6 @@ export const postApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: newPost,
       }),
-      invalidatesTags: ["Post"],
     }),
     patchPost: builder.mutation({
       query: (pathedPost) => ({
@@ -21,35 +19,21 @@ export const postApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: pathedPost,
       }),
-      invalidatesTags: (result, error, arg) => [{ type: "Post", id: arg.id }],
     }),
     removePost: builder.mutation({
       query: (postId) => ({
         url: `posts/${postId}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, id) => [{ type: "Post", id }],
     }),
     fetchPostComments: builder.query({
       query: (postId) => `posts/${postId}/comments`,
-      providesTags: ["Comment"],
     }),
   }),
 });
 
-export const selectPostResult = postApiSlice.endpoints.fetchPosts.select();
-const emptyPosts = [];
-
-export const selectAllPosts = createSelector(
-  selectPostResult,
-  (postResult) => postResult?.data ?? emptyPosts
-);
-
-export const selectPostByUserId = createSelector(
-  selectAllPosts,
-  (state, userId) => userId,
-  (posts, userId) => posts.filter((post) => post.userId === userId)
-);
+// export const selectPostResult = postApiSlice.endpoints.fetchPosts.select();
+// const emptyPosts = [];
 
 export const selectCommentResult =
   postApiSlice.endpoints.fetchPostComments.select();
@@ -75,14 +59,33 @@ export const {
 
 export const postSlice = createSlice({
   name: "post",
-  initialState: { deletedPost: [] },
+  initialState: { deletedPost: [], posts: [] },
   reducers: {
     //this used to simulate removed post on the UI since API not really deleting post
     saveDeletedPost: (state, { payload }) => {
       state.deletedPost = [...state.deletedPost, payload];
     },
   },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      postApiSlice.endpoints.fetchPosts.matchFulfilled,
+      (state, { payload }) => {
+        state.posts = [...payload];
+      }
+    );
+    //this used to simulate created post on the UI since API not really create post
+    builder.addMatcher(
+      postApiSlice.endpoints.createPost.matchFulfilled,
+      (state, { payload }) => {
+        state.posts = [...state.posts, payload];
+      }
+    );
+  },
 });
+
+export const selectAllPosts = (state) => state.post.posts;
+export const selectPostByUserId = (state, userId) =>
+  state.post.posts.filter((post) => post.userId === userId);
 
 export const { saveDeletedPost } = postSlice.actions;
 
