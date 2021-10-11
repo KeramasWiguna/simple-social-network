@@ -6,8 +6,10 @@ import { Textarea } from "@chakra-ui/textarea";
 import { useForm } from "react-hook-form";
 import { useCreatePostMutation, usePatchPostMutation } from "../postSlice";
 import { CheckIcon } from "@chakra-ui/icons";
+import { useToast } from "@chakra-ui/toast";
 
 export const PostForm = ({ post, onSuccess, ...props }) => {
+  const toast = useToast();
   const {
     register,
     handleSubmit,
@@ -40,6 +42,15 @@ export const PostForm = ({ post, onSuccess, ...props }) => {
       if (!isError) reset();
     }
 
+    if (isError || patchError) {
+      toast({
+        title: "Oh no",
+        description: "There was an error",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
     if (onSuccess) onSuccess();
   };
 

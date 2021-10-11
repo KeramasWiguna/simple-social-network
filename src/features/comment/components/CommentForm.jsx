@@ -2,6 +2,7 @@ import { Button } from "@chakra-ui/button";
 import { FormControl, FormErrorMessage } from "@chakra-ui/form-control";
 import { CheckIcon } from "@chakra-ui/icons";
 import { Box } from "@chakra-ui/layout";
+import { useToast } from "@chakra-ui/react";
 import { Textarea } from "@chakra-ui/textarea";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -20,6 +21,7 @@ export const CommentForm = ({ comment, userId, onSuccess, ...props }) => {
   } = useForm();
 
   const user = useSelector((state) => selectUserById(state, userId));
+  const toast = useToast();
 
   const [createComment, { isLoading, isError }] = useCreateCommentMutation();
   const [patchComment, { isLoading: patchLoading, isError: patchError }] =
@@ -45,6 +47,16 @@ export const CommentForm = ({ comment, userId, onSuccess, ...props }) => {
       });
 
       if (!isError) reset();
+    }
+
+    if (isError || patchError) {
+      toast({
+        title: "Oh no",
+        description: "There was an error",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
     }
 
     if (onSuccess) onSuccess();

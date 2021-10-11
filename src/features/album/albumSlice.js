@@ -5,7 +5,6 @@ export const albumApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     fetchAlbums: builder.query({
       query: () => "albums",
-      providesTags: ["Album"],
     }),
     fetchAlbumPhotos: builder.query({
       query: (albumId) => `albums/${albumId}/photos`,
@@ -26,5 +25,12 @@ export const selectAllAlbums = createSelector(
 export const selectAlbumByUserId = createSelector(
   selectAllAlbums,
   (state, userId) => userId,
-  (albums, userId) => albums.filter((album) => album.userId === userId)
+  (albums, userId) =>
+    albums.filter((album) => album.userId === parseInt(userId))
+);
+
+export const selectAlbumById = createSelector(
+  selectAllAlbums,
+  (state, albumId) => albumId,
+  (albums, albumId) => albums.find((album) => album.id === parseInt(albumId))
 );

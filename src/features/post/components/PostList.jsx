@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { selectAllPosts, useFetchPostsQuery } from "../postSlice";
 import { PostCard } from "./PostCard";
 
-export function PostList() {
+export function PostList({ userId, ...props }) {
   const posts = useSelector(selectAllPosts);
   const { error, isLoading } = useFetchPostsQuery();
   const deletedPost = useSelector((state) => state.post.deletedPost);
@@ -15,6 +15,20 @@ export function PostList() {
         <Heading color="gray.400">Oh no, there was an error</Heading>
       ) : isLoading ? (
         <Spinner size="md" />
+      ) : posts && userId ? (
+        <>
+          {posts
+            .map((post) => {
+              if (
+                post.userId === parseInt(userId) &&
+                !deletedPost.includes(post.id)
+              ) {
+                return <PostCard key={post.id} post={post} />;
+              }
+              return null;
+            })
+            .reverse()}
+        </>
       ) : posts ? (
         <>
           {posts

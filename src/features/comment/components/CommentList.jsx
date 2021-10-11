@@ -12,8 +12,8 @@ export function CommentList({ postId, ...props }) {
   const deletedComment = useSelector((state) => state.comment.deletedComment);
 
   useEffect(() => {
-    refetch();
-  }, [postId]);
+    if (refetch) refetch();
+  }, [postId, refetch]);
 
   return (
     <div>

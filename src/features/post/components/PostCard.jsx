@@ -45,7 +45,10 @@ export const PostCard = ({ post, editable, ...props }) => {
     return (
       <Box
         cursor="pointer"
-        onClick={() => navigate(`/post/${post.id}`)}
+        onClick={(e) => {
+          e.stopPropagation();
+          navigate(`/post/${post.id}`);
+        }}
         py="4"
         borderBottom="1px"
         borderColor="gray.200"
