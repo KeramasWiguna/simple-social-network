@@ -30,6 +30,10 @@ export const postApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, error, id) => [{ type: "Post", id }],
     }),
+    fetchPostComments: builder.query({
+      query: (postId) => `posts/${postId}/comments`,
+      providesTags: ["Comment"],
+    }),
   }),
 });
 
@@ -45,6 +49,21 @@ export const selectPostByUserId = createSelector(
   selectAllPosts,
   (state, userId) => userId,
   (posts, userId) => posts.filter((post) => post.userId === userId)
+);
+
+export const selectCommentResult =
+  postApiSlice.endpoints.fetchPostComments.select();
+const emptyComments = [];
+
+export const selectAllComments = createSelector(
+  selectCommentResult,
+  (postResult) => postResult?.data ?? emptyComments
+);
+
+export const selectCommentById = createSelector(
+  selectAllComments,
+  (state, commentId) => commentId,
+  (comments, commentId) => comments.find((comment) => comment.id === commentId)
 );
 
 export const {

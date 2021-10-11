@@ -1,5 +1,5 @@
 import { BASE_URL } from "../../app/const";
-import { post } from "../../app/testData";
+import { comment, post } from "../../app/testData";
 import { setupApiStore } from "../../app/testUtils";
 import { postApiSlice } from "./postSlice";
 
@@ -183,6 +183,55 @@ describe("removePost", () => {
         const {
           error: { error },
         } = action;
+        expect(error).toBe("Error: Internal Server Error");
+      });
+  });
+});
+
+describe("fetchPostComments", () => {
+  const storeRef = setupApiStore(postApiSlice);
+  fetchMock.mockResponse(JSON.stringify({}));
+
+  test("request is correct", () => {
+    return storeRef.store
+      .dispatch(postApiSlice.endpoints.fetchPostComments.initiate(post.id))
+      .then(() => {
+        expect(fetchMock).toBeCalledTimes(1);
+        const { method, url } = fetchMock.mock.calls[0][0];
+
+        expect(method).toBe("GET");
+        expect(url).toBe(`${BASE_URL}/posts/${post.id}/comments`);
+      });
+  });
+
+  test("successful response", () => {
+    const storeRef = setupApiStore(postApiSlice);
+    fetchMock.mockResponse(JSON.stringify([comment]));
+
+    return storeRef.store
+      .dispatch(postApiSlice.endpoints.fetchPostComments.initiate(post.id))
+      .then((action) => {
+        const { status, data, isSuccess } = action;
+        expect(status).toBe("fulfilled");
+        expect(isSuccess).toBe(true);
+        expect(data).toStrictEqual([comment]);
+      });
+  });
+
+  test("unsuccessful response", () => {
+    const storeRef = setupApiStore(postApiSlice);
+    fetchMock.mockReject(new Error("Internal Server Error"));
+
+    return storeRef.store
+      .dispatch(postApiSlice.endpoints.fetchPosts.initiate(post.id))
+      .then((action) => {
+        const {
+          status,
+          error: { error },
+          isError,
+        } = action;
+        expect(status).toBe("rejected");
+        expect(isError).toBe(true);
         expect(error).toBe("Error: Internal Server Error");
       });
   });

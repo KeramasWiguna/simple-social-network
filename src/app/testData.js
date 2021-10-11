@@ -43,3 +43,11 @@ export const photo = {
   url: "https://via.placeholder.com/600/92c952",
   thumbnailUrl: "https://via.placeholder.com/150/92c952",
 };
+
+export const comment = {
+  postId: 1,
+  id: 1,
+  name: "id labore ex et quam laborum",
+  email: "Eliseo@gardner.biz",
+  body: "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium",
+};
